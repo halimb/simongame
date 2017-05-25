@@ -1,0 +1,13 @@
+body {
+	background-color: #99dd99;
+}
+
+.panel {
+	margin: auto;
+	width: 35vw;
+	height: 35vw;
+	top: 0; right: 0; 
+	bottom: 0; left: 0;
+	position: absolute;
+	background-color: #55aa55;
+}
