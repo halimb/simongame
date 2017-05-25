@@ -3,9 +3,16 @@ var qs= [];
 var sounds = [];
 var soundURLs = [ 	
 		"sound/b.mp3", 
-		"sound/c.mp3", 
+		"sound/csharp.mp3", 
 		"sound/e.mp3", 
-		"sound/g.mp3"
+		"sound/a.mp3"
+	];
+
+var colors = [ 	
+		"#FF4D23", 
+		"#FFE523", 
+		"#5D29B8", 
+		"#1BC05E"
 	];
 
 function init() {
@@ -31,6 +38,9 @@ function init() {
 				sounds[x].play()
 			}
 		})(i);
+
+		//bg color
+		q.style.backgroundColor = colors[i];
 	}
 
 }
