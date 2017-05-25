@@ -4,10 +4,23 @@ body {
 
 .panel {
 	margin: auto;
-	width: 35vw;
-	height: 35vw;
+	width: 45vw;
+	height: 45vw;
 	top: 0; right: 0; 
 	bottom: 0; left: 0;
 	position: absolute;
 	background-color: #55aa55;
+	clip-path: circle(45% at 49% 50%);
+}
+
+.quarter {
+ 	cursor: pointer;
+	border: .5vw solid white;
+	height: 21.5vw;
+	width: 21.5vw;
+	float: left;
+}
+
+.quarter:active {
+  	background-color:  #77cc77;
 }
