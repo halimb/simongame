@@ -1,6 +1,12 @@
+@font-face {
+    font-family: "IndieFlower";
+    src: url("fonts/IndieFlower.ttf");
+}
+
 body {
 	user-select: none;
 	background-color: #eee ;
+	font-family: "IndieFlower";
 }
 
 .panel {
@@ -12,7 +18,7 @@ body {
 	bottom: 0; left: 0;
 	position: absolute;
 	background-color: #fff;
-	clip-path: circle(45% at 49% 50%);
+	clip-path: circle(50% at 50% 50%);
 }
 
 .quarter {
@@ -24,25 +30,47 @@ body {
 }
 
 .interactive:active {
-  	opacity: 0.7 !important;
+  	opacity: 0.6 !important;
 }
 
-.center {
-	height: 20vw;
-	width: 20vw;
+.shadow {
+	height: 45vw;
+	width: 45vw;
 	border-radius: 50%;
 	margin: auto;
 	top: 0; right: 0; 
 	bottom: 0; left: 0;
 	position: absolute;
-	background-color: #eee;
+	pointer-events: none;
+	background-color: rgba(0, 0, 0, 0);
+	box-shadow: inset 0 0 15vw rgba(0, 0, 0, .3),
+	1vw 1vw 3vw rgba(0, 0, 0, .3);
 }
 
+.disp {
+	border-radius: 50%;
+	height: 20vw;
+	width: 20vw;
+	margin: auto;
+	top: 0; right: 0;
+	bottom: 0; left: 0;
+	position: absolute;
+	pointer-events: none;
+	background-color: #eee;
+	box-shadow: inset 1vw .5vw 4vw rgba(0, 0, 0, .5);
+}
 
+.center {
+	color: #333;
+	font-size: 7vw;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 20vw;
+}
 
 /* DELETE WHEN COMPLETE*/
-
 .num {
+	visibility: hidden;
 	position: relative;
 	top: 40%;
 	left: 40%;

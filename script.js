@@ -1,12 +1,15 @@
 var panel = document.getElementById("panel");
+var hint = document.getElementById("hint");
+var disp = document.getElementById("disp");
 var qs= [];
 var seq = [];
 var prev;
 var curr = 0;
-var playing = true;
+var idle = true;
+var playing = false;
 var strict = false;
 const delay = 500;
-const limit = 5;
+const limit = 3;
 
 
 var soundURLs = [ 	
@@ -23,6 +26,7 @@ var colors = [
 		"#1BC05E"
 	];
 
+hint.onclick = getHint;
 
 function init() {
 	// inflate the quarter divs
@@ -31,9 +35,6 @@ function init() {
 		var quarter = "<div id='" + id + "' class='quarter'><span class='num'>"+i+"</span></div>";
 		panel.innerHTML += quarter;
 	}
-	var centerDiv = "<div class='center'></div>";
-	panel.innerHTML += centerDiv;
-
 	// bind sounds and set bg color
 	for(var i = 0; i < 4; i++) {
 		// refs
@@ -47,6 +48,10 @@ function init() {
 					getMove(x);
 					playSound(x);
 				}
+				else if(idle) {
+					setTimeout(playNext, 200);
+					idle = false;
+				}
 			}
 		})(i);
 
@@ -54,7 +59,6 @@ function init() {
 		q.style.backgroundColor = colors[i];
 	}
 
-	playNext();
 }
 
 function setOpacity(el, op) {
@@ -71,8 +75,7 @@ function addMove() {
 	seq.push(move);
 }
 
-function playSeq() {
-	var s = seq;
+function playSeq(s) {
 	var i = 0	
 	function next() {
 		//reset opacity
@@ -83,7 +86,7 @@ function playSeq() {
 
 		if(i < s.length) {
 			var id = s[i];
-			setOpacity(qs[id], .2);
+			setOpacity(qs[id], .6);
 			playSound(id);
 			i++;
 			setTimeout(next, delay);
@@ -101,44 +104,43 @@ function playSeq() {
 //TEST
 function playNext() {
 	addMove();
-	playSeq();
+	disp.innerHTML = seq.length;
+	playSeq(seq);
 }
 
 init();
 
 
 var play = document.getElementById("play");
-play.onclick = playSeq;
+play.onclick = function(){playSeq(seq)};
+
+
 
 function getMove(i) {
 	if(playing) {
-		if(seq.length == 1) {
-			console.log("\n\n <   <   <   <   <   <   <\n\n");
-		}
 
+		//Correct move
 		if(i == seq[curr]) {
-			console.log("move: "+curr+", RIGHT MOVE :)\n\n");
 			curr++;
 			if(curr == seq.length ) {
-				console.log("congatulations !");
 				curr = 0;
-				
+				//Win
 				if(seq.length == limit) {
-					console.log(" restarting the game..."+
-						"\n\n >   >   >   >   >   >   >\n\n\n\n");
 					seq = [];
+					setTimeout(win, delay);
+					setTimeout(playNext, 5 * delay);
+					return;
 				}
 				setPlaying(false);
 				setTimeout(playNext, 2 * delay);
 			}
 		}
+
+		//Wrong move
 		else {
-			console.log("move: "+curr+", WRONG MOVE :("+
-				"\n restarting the game..."+
-				"\n\n >   >   >   >   >   >   >\n\n\n\n");
 			setPlaying(false);
 			seq = strict ? [] : seq;
-			func = strict ? playNext : playSeq;
+			func = strict ? playNext : function(){playSeq(seq)};
 			setTimeout(func, 3*delay)
 			curr = 0;
 			return;
@@ -158,4 +160,20 @@ function setPlaying(p) {
 function setInteractive(q, playing) {
 	q.className = playing ? "quarter interactive" : "quarter idle";
 	q.style.cursor = playing ? "pointer" : "default !important";
+}
+
+function win() {
+	var l = 9;
+	function playNote(x) {
+		playSound(x%5);
+		if(x < l) {
+			setTimeout(function(){playNote(x + 1)}, 150);
+		}
+	}
+	playNote(0);
+}
+
+function getHint() {
+	var s = [seq[curr]];
+	playSeq(s);
 }
