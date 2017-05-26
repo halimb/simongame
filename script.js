@@ -1,6 +1,9 @@
 var panel = document.getElementById("panel");
 var qs= [];
-var sounds = [];
+var seq = [];
+var prev;
+const delay = 500;
+
 var soundURLs = [ 	
 		"sound/b.mp3", 
 		"sound/csharp.mp3", 
@@ -14,6 +17,7 @@ var colors = [
 		"#5D29B8", 
 		"#1BC05E"
 	];
+
 
 function init() {
 	// inflate the quarter divs
@@ -29,24 +33,61 @@ function init() {
 		var q = document.getElementById("q" + i);
 		qs.push(q);
 
-		//sounds
-		var sound = new Audio(soundURLs[i]);
-		sounds.push(sound);
+		//bind sound
 		q.onclick =( function(x){
 			return function() {
-				sounds[x] = new Audio(soundURLs[x]);
-				sounds[x].play()
+				playSound(x);
 			}
 		})(i);
 
-		//bg color
+		//bind bg color
 		q.style.backgroundColor = colors[i];
 	}
 
 }
 
 function playSound(i) {
+	var sound = new Audio(soundURLs[i]);
+	setOpacity(qs[i], .2);
+	sound.play();
 }
+
+function addMove() {
+	var move = Math.floor(Math.random() * 4);
+	seq.push(move);
+}
+
+function playSeq(s) {
+	var i = 0	
+	function playNext() {
+		//reset opacity
+		if(i > 0) {
+			var prev = s[i -1];
+			setOpacity(qs[prev], 1);
+		} 
+
+		playSound(s[i++]);
+		if(i < s.length) {
+			console.log(i-1)
+			setTimeout(playNext, delay)
+		}
+	}
+	playNext();
+}
+
+function setOpacity(el, op) {
+	el.style.opacity = op;
+}
+
+
+//TEST
+for(var i = 0; i < 10; i++) {
+	addMove();
+}
+
 init();
+
+playSeq(seq);
+
 
 	
