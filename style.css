@@ -1,12 +1,13 @@
+
 @font-face {
-    font-family: "IndieFlower";
-    src: url("fonts/IndieFlower.ttf");
+    font-family: "Quicksand";
+    src: url("fonts/Quicksand.ttf");
 }
 
 body {
 	user-select: none;
 	background-color: #eee ;
-	font-family: "IndieFlower";
+	font-family: "Quicksand";
 }
 
 .panel {
@@ -61,20 +62,31 @@ body {
 }
 
 .center {
-	color: #333;
+	color: #000;
 	font-size: 7vw;
 	text-align: center;
 	vertical-align: middle;
-	line-height: 20vw;
+	line-height: 18vw;
 }
 
-/* DELETE WHEN COMPLETE*/
+.msg {
+	margin: 3.5vw;
+	line-height: 5vw; 
+	font-size: 4.5vw; 
+}
+
 .num {
-	visibility: hidden;
-	position: relative;
-	top: 40%;
-	left: 40%;
-	text-align: center;
-	font-size: 200%;
-	padding-top: 2vw;
+	font-size: 12vw; 
+}
+
+.win {
+	margin: 4vw;
+	font-size: 7vw;
+	line-height: 6vw;
+}
+
+.restart {
+	margin-top: 3.5vw;
+	font-size: 3.5vw;
+	line-height: 4.5vw;
 }

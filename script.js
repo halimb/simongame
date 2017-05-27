@@ -1,25 +1,28 @@
+var restartBtn = document.getElementById("restart");
 var panel = document.getElementById("panel");
 var hint = document.getElementById("hint");
 var disp = document.getElementById("disp");
+var t = [];
 var qs= [];
 var seq = [];
 var prev;
 var curr = 0;
 var idle = true;
 var playing = false;
-var strict = false;
+var strict = true;
 const delay = 500;
-const limit = 3;
+const limit = 2;
 
 
-var soundURLs = [ 	
+const soundURLs = [ 	
 		"sound/b.mp3", 
 		"sound/csharp.mp3", 
 		"sound/e.mp3", 
-		"sound/a.mp3"
+		"sound/a.mp3", 
+		"sound/g.mp3"
 	];
 
-var colors = [ 	
+const colors = [ 	
 		"#FF4D23", 
 		"#FFE523", 
 		"#5D29B8", 
@@ -27,12 +30,13 @@ var colors = [
 	];
 
 hint.onclick = getHint;
+restartBtn.onclick = restart;
 
 function init() {
 	// inflate the quarter divs
 	for(let i = 0; i < 4; i++) {
 		var id = "q" + i;
-		var quarter = "<div id='" + id + "' class='quarter'><span class='num'>"+i+"</span></div>";
+		var quarter = "<div id='" + id + "' class='quarter'></div>";
 		panel.innerHTML += quarter;
 	}
 	// bind sounds and set bg color
@@ -49,7 +53,7 @@ function init() {
 					playSound(x);
 				}
 				else if(idle) {
-					setTimeout(playNext, 200);
+					t.push(setTimeout(playNext, 200));
 					idle = false;
 				}
 			}
@@ -65,8 +69,11 @@ function setOpacity(el, op) {
 	el.style.opacity = op;
 }
 
-function playSound(i) {
+function playSound(i, rate) {
 	var sound = new Audio(soundURLs[i]);
+	if(rate) {
+		sound.playbackRate = rate;
+	}
 	sound.play();
 }
 
@@ -89,50 +96,48 @@ function playSeq(s) {
 			setOpacity(qs[id], .6);
 			playSound(id);
 			i++;
-			setTimeout(next, delay);
+			t.push(setTimeout(next, delay));
 		}
 		else{
 			setPlaying(true);
 		}
 	}
 	next();
-	console.log(seq)
+	showRem();
 }
 
-
+function showRem(){
+	showMsg(seq.length, "num");
+}
 
 //TEST
 function playNext() {
 	addMove();
-	disp.innerHTML = seq.length;
 	playSeq(seq);
 }
 
 init();
 
 
-var play = document.getElementById("play");
-play.onclick = function(){playSeq(seq)};
-
-
-
 function getMove(i) {
 	if(playing) {
-
+		clearTimeouts();
 		//Correct move
 		if(i == seq[curr]) {
 			curr++;
+			showMsg(":)", "num");
+			t.push(setTimeout(showRem, 3 * delay))
 			if(curr == seq.length ) {
+				setPlaying(false);
 				curr = 0;
 				//Win
 				if(seq.length == limit) {
 					seq = [];
-					setTimeout(win, delay);
-					setTimeout(playNext, 5 * delay);
+					t.push(setTimeout(final, delay));
+					t.push(setTimeout(playNext, 5 * delay));
 					return;
 				}
-				setPlaying(false);
-				setTimeout(playNext, 2 * delay);
+				t.push(setTimeout(playNext, 2 * delay));
 			}
 		}
 
@@ -140,8 +145,12 @@ function getMove(i) {
 		else {
 			setPlaying(false);
 			seq = strict ? [] : seq;
-			func = strict ? playNext : function(){playSeq(seq)};
-			setTimeout(func, 3*delay)
+			func = strict ? restart : function(){playSeq(seq)};
+			t.push(setTimeout(
+				function(){ final(true) },
+				delay / 2)
+			);
+			t.push(setTimeout(func, 5*delay));
 			curr = 0;
 			return;
 		}	
@@ -159,21 +168,61 @@ function setPlaying(p) {
 
 function setInteractive(q, playing) {
 	q.className = playing ? "quarter interactive" : "quarter idle";
-	q.style.cursor = playing ? "pointer" : "default !important";
+	q.style.cursor = playing ? "pointer" : "default";
 }
 
-function win() {
-	var l = 9;
+function final(loss) {
+	var msg = loss ? 
+	"wrong<br>move :(" : "win!<br>:)";
+	var clas = loss ? "msg" : "win";
+	var repeat = loss ? 3 : 11;
+	showMsg(msg, clas);
+
+	if(!loss) {
+		clearTimeouts();	
+		t.push(setTimeout(playNext, repeat * 100 + 3 * delay));	
+	}
+	playAlert(loss, repeat);
+}
+
+function playAlert(loss, l) {
 	function playNote(x) {
-		playSound(x%5);
+		var id = loss ? 4 : x % 4;
+		playSound(id, 2);
 		if(x < l) {
-			setTimeout(function(){playNote(x + 1)}, 150);
+			t.push(setTimeout(function(){playNote(x + 1)}, 100));
 		}
 	}
 	playNote(0);
 }
 
 function getHint() {
-	var s = [seq[curr]];
-	playSeq(s);
+	if(playing) {
+		var s = [seq[curr]];
+		playSeq(s);
+	}
+}
+
+function restart() {
+	clearTimeouts();
+	setPlaying(false);
+	seq = [];
+	curr = 0;
+	showMsg("Starting<br> a new<br>game", "restart");
+	t.push(setTimeout(playNext, delay * 3))
+}
+
+function clearTimeouts() {
+	if(t.length) {
+		t.forEach(function(el){
+			console.log("clearing timeout : " + el)
+			window.clearTimeout(el);
+		});
+		t = [];
+	}
+}
+
+function showMsg(msg, clas) {
+	var res = "<div class=" + clas + ">" + msg + "</div>" 
+	disp.innerHTML = res;
 }
