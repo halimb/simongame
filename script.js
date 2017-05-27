@@ -1,4 +1,5 @@
 var restartBtn = document.getElementById("restart");
+var strictBtn = document.getElementById("strict");
 var panel = document.getElementById("panel");
 var hint = document.getElementById("hint");
 var disp = document.getElementById("disp");
@@ -9,9 +10,9 @@ var prev;
 var curr = 0;
 var idle = true;
 var playing = false;
-var strict = true;
+var strict = false;
 const delay = 500;
-const limit = 2;
+const limit = 10;
 
 
 const soundURLs = [ 	
@@ -31,6 +32,9 @@ const colors = [
 
 hint.onclick = getHint;
 restartBtn.onclick = restart;
+strictBtn.onclick = toggleStrict;
+
+init();
 
 function init() {
 	// inflate the quarter divs
@@ -78,7 +82,7 @@ function playSound(i, rate) {
 }
 
 function addMove() {
-	var move = Math.floor(Math.random() * 4);
+	var move = Date.now() % 4;
 	seq.push(move);
 }
 
@@ -110,13 +114,11 @@ function showRem(){
 	showMsg(seq.length, "num");
 }
 
-//TEST
 function playNext() {
 	addMove();
 	playSeq(seq);
 }
 
-init();
 
 
 function getMove(i) {
@@ -145,7 +147,9 @@ function getMove(i) {
 		else {
 			setPlaying(false);
 			seq = strict ? [] : seq;
-			func = strict ? restart : function(){playSeq(seq)};
+			func = strict ? 
+				restart : 
+				function(){ playSeq(seq) };
 			t.push(setTimeout(
 				function(){ final(true) },
 				delay / 2)
@@ -166,9 +170,25 @@ function setPlaying(p) {
 	}
 }
 
+function toggleStrict() {
+	console.log("inside toggleStrict")
+	strict = !strict;
+	var cls = strict ? 
+	"btn strict" : 
+	"btn";
+
+	strictBtn.className = cls;
+}
+
+
 function setInteractive(q, playing) {
-	q.className = playing ? "quarter interactive" : "quarter idle";
-	q.style.cursor = playing ? "pointer" : "default";
+	q.className = playing ? 
+	"quarter interactive" : 
+	"quarter idle";
+
+	q.style.cursor = playing ? 
+	"pointer" : 
+	"default";
 }
 
 function final(loss) {
@@ -180,7 +200,7 @@ function final(loss) {
 
 	if(!loss) {
 		clearTimeouts();	
-		t.push(setTimeout(playNext, repeat * 100 + 3 * delay));	
+		t.push(setTimeout(restart, 4 * delay));	
 	}
 	playAlert(loss, repeat);
 }
@@ -190,7 +210,9 @@ function playAlert(loss, l) {
 		var id = loss ? 4 : x % 4;
 		playSound(id, 2);
 		if(x < l) {
-			t.push(setTimeout(function(){playNote(x + 1)}, 100));
+			t.push(setTimeout(
+				function(){playNote(x + 1)},
+				 100));
 		}
 	}
 	playNote(0);
@@ -215,7 +237,6 @@ function restart() {
 function clearTimeouts() {
 	if(t.length) {
 		t.forEach(function(el){
-			console.log("clearing timeout : " + el)
 			window.clearTimeout(el);
 		});
 		t = [];

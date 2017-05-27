@@ -13,8 +13,8 @@ body {
 .panel {
 	border-radius: 50%;
 	margin: auto;
-	width: 45vw;
-	height: 45vw;
+	width: 45vh;
+	height: 45vh;
 	top: 0; right: 0; 
 	bottom: 0; left: 0;
 	position: absolute;
@@ -24,9 +24,9 @@ body {
 
 .quarter {
  	cursor: pointer;
-	/*border: .25vw solid white;*/
-	height: 22.5vw;
-	width: 22.5vw;
+	/*border: .25vh solid white;*/
+	height: 22.5vh;
+	width: 22.5vh;
 	float: left;
 }
 
@@ -35,8 +35,8 @@ body {
 }
 
 .shadow {
-	height: 45vw;
-	width: 45vw;
+	height: 45vh;
+	width: 45vh;
 	border-radius: 50%;
 	margin: auto;
 	top: 0; right: 0; 
@@ -44,49 +44,96 @@ body {
 	position: absolute;
 	pointer-events: none;
 	background-color: rgba(0, 0, 0, 0);
-	box-shadow: inset 0 0 15vw rgba(0, 0, 0, .3),
-	1vw 1vw 3vw rgba(0, 0, 0, .3);
+	box-shadow: inset 0 0 15vh rgba(0, 0, 0, .3),
+	1vh 1vh 3vh rgba(0, 0, 0, .3);
 }
 
 .disp {
 	border-radius: 50%;
-	height: 20vw;
-	width: 20vw;
+	height: 20vh;
+	width: 20vh;
 	margin: auto;
 	top: 0; right: 0;
 	bottom: 0; left: 0;
 	position: absolute;
 	pointer-events: none;
 	background-color: #eee;
-	box-shadow: inset 1vw .5vw 4vw rgba(0, 0, 0, .5);
+	box-shadow: inset 1vh .5vh 4vh rgba(0, 0, 0, .5);
 }
 
 .center {
 	color: #000;
-	font-size: 7vw;
+	font-size: 7vh;
 	text-align: center;
 	vertical-align: middle;
-	line-height: 18vw;
+	line-height: 18vh;
 }
 
 .msg {
-	margin: 3.5vw;
-	line-height: 5vw; 
-	font-size: 4.5vw; 
+	margin: 3.5vh;
+	line-height: 5vh; 
+	font-size: 4.5vh; 
 }
 
 .num {
-	font-size: 12vw; 
+	font-size: 12vh; 
 }
 
 .win {
-	margin: 4vw;
-	font-size: 7vw;
-	line-height: 6vw;
+	margin: 4vh;
+	font-size: 7vh;
+	line-height: 6vh;
 }
 
 .restart {
-	margin-top: 3.5vw;
-	font-size: 3.5vw;
-	line-height: 4.5vw;
+	margin-top: 3.5vh;
+	font-size: 3.5vh;
+	line-height: 4.5vh;
 }
+
+.ctrl {
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 38vh;
+	height: 15vh;
+	margin: auto;
+	position: absolute;
+}
+
+.btn { 
+	color: #000;
+	width: 10vh;
+	height: 10vh;
+	margin: 1vh;
+	float: right;
+	cursor: pointer;
+	font-size: 3vh;
+	line-height: 2vh;
+	text-align: center;
+	border-radius: 50%;
+	border: .1vh solid #000;
+}
+
+.btn:active {
+	border-width: .3vh;
+}
+
+.btn-txt {
+	margin-top: 4vh;
+	font-size: 2.5vh;
+	line-height: 2vh;
+}
+
+#strict {
+	transition: .5s ease;
+}
+
+.strict {
+	border: .1vh solid #fcc;
+	background-color: #e53935;
+	box-shadow: 0 0 3vh #f00;
+	color: #fee;
+}
+
+
