@@ -8,6 +8,10 @@ body {
 	user-select: none;
 	background-color: #eee ;
 	font-family: "Quicksand";
+    white-space: nowrap;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
 }
 
 .panel {
@@ -19,7 +23,19 @@ body {
 	bottom: 0; left: 0;
 	position: absolute;
 	background-color: #fff;
-	clip-path: circle(50% at 50% 50%);
+	/*clip-path: circle(50% at 50% 50%); */
+}
+
+.clip {
+	border: 10vh solid #eee;
+	border-radius: 50%;
+	margin: auto;
+	width: 45vh;
+	height: 45vh;
+	top: 0; right: 0; 
+	bottom: 0; left: 0;
+	position: absolute;
+	pointer-events: none;
 }
 
 .quarter {
@@ -136,4 +152,68 @@ body {
 	color: #fee;
 }
 
+@media screen and (max-width: 500px) {
+	.panel {
+		clip-path: circle(50% at 50% 50%);
+	}
+	.clip {
+		border: none;
+	}
+}
 
+/*.panel {
+		width: 45vw;
+		height: 45vw;
+	}
+
+	.clip {
+		border: 6vw solid #eee;
+		width: 45vw;
+		height: 45vw;
+	}
+
+	.quarter {
+		height: 22.5vw;
+		width: 22.5vw;
+	}
+
+	.shadow {
+		height: 45vw;
+		width: 45vw;
+		box-shadow: inset 0 0 15vw rgba(0, 0, 0, .3),
+		1vw 1vw 3vw rgba(0, 0, 0, .3);
+	}
+
+	.disp {
+		height: 20vw;
+		width: 20vw;
+		box-shadow: inset 1vw .5vw 4vw rgba(0, 0, 0, .5);
+	}
+
+	.center {
+		font-size: 7vw;
+		line-height: 18vw;
+	}
+
+	.msg {
+		margin: 3.5vw;
+		line-height: 5vw; 
+		font-size: 4.5vw; 
+	}
+
+	.num {
+		font-size: 12vw; 
+	}
+
+	.win {
+		margin: 4vw;
+		font-size: 7vw;
+		line-height: 6vw;
+	}
+
+	.restart {
+		margin-top: 3.5vw;
+		font-size: 3.5vw;
+		line-height: 4.5vw;
+	}
+*/
