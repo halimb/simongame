@@ -124,7 +124,7 @@ function getMove(i) {
         //Correct move
         if (i == seq[curr]) {
             curr++;
-            showMsg(":)", "num");
+            showMsg("=)", "num");
             t.push(setTimeout(showRem, 3 * DELAY))
             if (curr == seq.length) {
                 setPlaying(false);
@@ -188,7 +188,7 @@ function setInteractive(q, playing) {
 
 function final(loss) {
     var msg = loss ?
-        "wrong<br>move :(" : "win!<br>:)";
+        "wrong<br>move<br>=(" : "win!<br>=)";
     var clas = loss ? "msg" : "win";
     var repeat = loss ? 3 : 11;
     showMsg(msg, clas);
